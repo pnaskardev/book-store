@@ -118,5 +118,7 @@ router.delete('/delete/:id',async(req,res,next)=>{
     }
 });
 
+module.exports=router;
+
 
 

@@ -3,6 +3,8 @@ const dotnev = require('dotenv');
 const cors = require('cors');
 const { default: mongoose } = require('mongoose');
 
+
+const bookRoutes=require('./routes/bookRoutes');
 // INITIALIZATIONS
 dotnev.config();
 const app = express();
@@ -18,18 +20,25 @@ app.use(cors());
 //     methods: ['GET', 'POST', 'PUT', 'DELETE'],
 // }));
 
-// ROUTES 
+// ROUTES
+app.use('healthCheck',(req,res,next)=>{
+    console.log("Api working properly");
+    res.sendStatus(200);
+});
+
+
+app.use('/books',bookRoutes);
 
 
 // CONNECT TO DB
 mongoose
-    .connect(process.env.DATABASE_URI)
-    .then(()=>{
-        console.log('Connected to DB');
-        app.listen(process.env.PORT,()=>{
-            console.log(`Server is running on PORT: ${process.env.PORT}`);
-        })
-    }).catch((error)=>{
-        console.log(error);
+.connect(process.env.DATABASE_URI)
+.then(()=>{
+    console.log('Connected to DB');
+    app.listen(process.env.PORT,()=>{
+        console.log(`Server is running on PORT: ${process.env.PORT}`);
     })
+}).catch((error)=>{
+    console.log(error);
+})
 
